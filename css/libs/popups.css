@@ -1,0 +1,11 @@
+
+body{
+	background: #000;
+	animation: smooth-color-popup 5s ease-out 1 forwards;
+}
+
+@keyframes smooth-color-popup {
+	from {background-color: #000;}
+	to {background-color: #fff;}
+}
+
