@@ -1,0 +1,29 @@
+@font-face{
+	font-display:swap;
+	font-family:'Signature';
+	font-weight:normal;
+	font-style:normal;
+	src: url('//fonts.d2cmedia.ca/KiaSignatureRegular.woff2')format('woff2');
+}
+@font-face{
+	font-display:swap;
+	font-family:'Signature';
+	font-weight:bold;
+	font-style:normal;
+	src: url('//fonts.d2cmedia.ca/KiaSignatureBold.woff2')format('woff2');
+}
+@font-face{
+	font-display:swap;
+	font-family:'SignatureLight';
+	font-weight:normal;
+	font-style:normal;
+	src: url('//fonts.d2cmedia.ca/KiaSignatureLight.woff2')format('woff2');
+}
+@font-face{
+	font-display:swap;
+	font-family:'SignatureLight';
+	font-weight:bold;
+	font-style:normal;
+	src: url('//fonts.d2cmedia.ca/KiaSignatureBold.woff2')format('woff2');
+}
+

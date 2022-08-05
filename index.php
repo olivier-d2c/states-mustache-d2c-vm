@@ -30,6 +30,14 @@ JS,
       return '<span class="clickable" onclick="onClickable(this);">' + render(text) + '</span>';
 
 JS,
+	
+	'formable' =><<<JS
+      
+      //that just make the content clickable and use a global js function
+      //console.log("FUNCTIONS[clickable]:", text);
+      return '<span class="clickable" onclick="onFormable(this, \'personalData\');">' + render(text) + '</span>';
+
+JS,
     
     'asyncMarital' =><<<JS
         
@@ -79,11 +87,11 @@ $templatePersonalInterest = base64_encode(utf8_decode(<<<HTML
         <span>{{personal.firstName}} {{personal.lastName}}</span>
         {{#personal.age}}
           {{#personal.functions.getAge}}{{/personal.functions.getAge}}
-          {{#personal.functions.clickable}}
+          {{#personal.functions.formable}}
             {{#personal.functions.bold}}
                 <span>&agrave; {{personal.age}}<span>
             {{/personal.functions.bold}}
-          {{/personal.functions.clickable}}  
+          {{/personal.functions.formable}}
         {{/personal.age}}   
       {{/personal}}
       {{#interest.sport}}
@@ -337,7 +345,7 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
     <!-- from file: /data/phones.json -->
     <input type="hidden" value="phones" data-binders="@phones.json">
 
-    <!-- from inside the elemtn content text with a long states path for testing -->  
+    <!-- from inside the elemtn content text with a long states path for testing -->
     <script type="application/json" data-value="popups" data-binders="#">
       {
         "sequence" : [

@@ -145,6 +145,44 @@ const popit = async (automatic) => {
     })
 }
 
+const formit = async (name) => {
+    await Appz().then(async (appz) => {
+        const prop = `forms.${name}`
+        //but before creating it will check if it doesnt already exist and put the focus to it instead
+        const cuid = await appz.gstates(`${prop}.cuid`)
+        if(cuid !== null && await appz.gstates(`${prop}.opened`) === true){
+            const el = document.getElementById(cuid)
+            if(el !== null){
+                el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+            }
+            //and we can go away
+            return
+        }
+        //set the flag to opened
+        await appz.sstates( `${prop}.opened`, true)
+        //the creation
+        const container = 'forms-' + rand()
+        await anode('body', 'div', {class: 'form-container', id: container}, `
+            <input type="hidden" value="${prop}" data-binders="@forms.json.php?prop=${prop}&uid=${container}">
+            <div class="container wrap">
+                <div class="response">
+                    <span>Forms ${prop} Data:</span>
+                    <div data-binded="${prop}"></div>
+                    <button class="clear" data-action="delete" data-prop="${prop}">clear state</button>
+                </div>
+                <!--
+                basic popup binded +, but this time there will be input injected that are data-binding/binded too
+                instead of binding them here, to test second level binding and scope
+                -->
+                <div class="text infos" data-binded="${prop}" data-templated="@forms.html.php?prop=${prop}&uid=${container}">
+                    <div class="loading"></div>
+                </div>
+            </div>
+        `)
+        await traverse(container)
+    })
+}
+
 const Appz = async () => {
     if(window.appz === undefined || window.appz === null){
         while(true){
@@ -166,5 +204,14 @@ window.onClickable = async (ev, args) => {
     await popit(false)
     
 }
+
+window.onFormable = async (ev, args) => {
+    
+    console.log('WINDOW.ONFORMABLE:', {ev, args})
+    
+    await formit(args ?? 'default')
+    
+}
+
 
 //EOF

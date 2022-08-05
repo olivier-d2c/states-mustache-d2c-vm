@@ -43,7 +43,7 @@ $scripted =<<<JS
                 if(item.standalone ?? false){
                     //will need to check if we already have it injected by any components
                     if(document.querySelector('link[href="' + item.href + '"]')){
-                        console.warn("CSS ALREADY PRESENT:", item.href);
+                        //console.warn("CSS ALREADY PRESENT:", item.href);
                         standalone = true;
                     }        
                 }
@@ -83,7 +83,7 @@ $scripted =<<<JS
                 if(item.standalone ?? false){
                     //will need to check if we already have it injected by any components
                     if(document.querySelector('script[src="' + item.src + '"]')){
-                        console.warn("SCRIPT ALREADY PRESENT:", item.src);
+                        //console.warn("SCRIPT ALREADY PRESENT:", item.src);
                         standalone = true;
                     }        
                 }
