@@ -250,15 +250,11 @@
 		let undos = []
 		let observables = {}
 		
-		const _sleep = m => new Promise((resolve, reject) => setTimeout(() => {
-			resolve()
-		}, m))
-		
 		async function setStates(prop, value, nosave, noupdated) {
-			await _sleep(0)
+			await sleep(0)
 			if (states) {
 				if (nosave === undefined) {
-					_save(prop, value)
+					_save(prop)
 				}
 				const rtn = Function('states', 'value', `
 					"use strict";
@@ -292,7 +288,7 @@
 				`)(states, value)
 				if (rtn) {
 					if (noupdated === undefined) {
-						_updated(prop)
+						_updated(prop, value)
 					}
 					return rtn
 				}
@@ -303,7 +299,7 @@
 		}
 		
 		async function delStates(prop) {
-			await _sleep(0)
+			await sleep(0)
 			if (states) {
 				_save(prop)
 				const rtn = Function('states', 'value', `
@@ -420,8 +416,8 @@
 			}
 		}
 		
-		function _updated(prop) {
-			console.log('STATE-UPDATED', {prop, states, registered, undos, observables});
+		function _updated(prop, value) {
+			console.log('STATE-UPDATED', {prop, value, states, registered, undos, observables});
 			if (prop.indexOf('.') !== -1) {
 				const rb = (a, s) => {
 					let it = a.shift();
@@ -462,7 +458,7 @@
 			}
 		}
 		
-		function _save(prop, v) {
+		function _save(prop) {
 			try {
 				let s = getStates(prop)
 				//TODO: type marital B, clear, type marital B, clear, than Undo
@@ -522,14 +518,6 @@
 	};
 	
 	const D2cIndex = async () => {
-		
-		const _sleep = m => new Promise((resolve, reject) => setTimeout(() => {
-			resolve()
-		}, m))
-		
-		const _diff = (a1, a2) => a2.filter(d => !a1.includes(d))
-		
-		const _intersect = (a1, a2) => a2.filter(d => a1.includes(d))
 		
 		//load import async
 		const _load = async (name) => {
@@ -591,12 +579,12 @@
 				document.querySelectorAll("[data-uid]").forEach((el) => {
 					present.push(el.dataset.uid)
 				})
-				const diff = _diff(present, bindedElementIds)
-				if (diff.length) {
+				const dif = diff(present, bindedElementIds)
+				if (dif.length) {
 					//removeed from binded listener
-					ModStates.unregister(diff)
+					ModStates.unregister(dif)
 					//remove from the stack
-					bindedElementIds = _intersect(present, bindedElementIds)
+					bindedElementIds = intersect(present, bindedElementIds)
 					//sopme debug
 					console.log('BINDEDELEMENTIDS:', {bindedElementIds})
 				}
@@ -809,10 +797,10 @@
 			let collect = async () => {
 				//check the elemnt not there anymore
 				await _garbage()
-				await _sleep(5000)
+				await sleep(10000)
 				collect()
 			}
-			await _sleep(5000)
+			await sleep(10000)
 			collect();
 		})();
 		

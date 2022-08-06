@@ -4,9 +4,6 @@ $prop = $_REQUEST['prop'] ?? 'default';
 $uid = $_REQUEST['uid'] ?? 'SID-'.crc32($prop.time());
 $scopedcss = str_replace('.', '-', $prop);
 
-//just some test
-$unique = (time() * time());
-
 $template =<<<HTML
     {{#{$prop}}}
         <style>
@@ -46,36 +43,51 @@ $template =<<<HTML
 		{{#{$prop}.functions.scripted}}
 			<script>
 				//not choice then to be non blocking, because it needs to write content before
-				setTimeout(() => {
+				(async () => {
 					//this will be injected by the functions::scripted from the json data
-					//but the template can be cached
-					//so this is our main id when we want only one of them showing
-					const uniquePhpId = '{$unique}';
-					const prop = "{$prop}";
 					//to access the element inside of it only
 					const parentId = "{$uid}";
 					const scopeElementId = "{{{$prop}.cuid}}";
-					const el = document.getElementById(scopeElementId);
-					console.log("SCOPEELEMENTID:", {scopeElementId, el});
-					//scrooooll to the injected form
-					el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+
+					if(!(new RegExp(parentId)).test(scopeElementId)){
+						debugger;
+					}	
+
+
+					//debugger;
+					console.log("SCOPEELEMENTID:", {scopeElementId, parentId});
+					//the close functions
+					const close = (ev) => {
+						//remove our parent container
+
+						//@TODO: have a bug here, 
+						//where parentId is the previous opended one, but scopeElementId is the current one ???
+						//even if in the template form.html.php return is the good one ???
+						//so must exist somewhere an async change 
+						//since the scopeElementId is based on states in js
+						//and the parentId is based on ajax call at creation of the template in php
+
+
+						document.getElementById(parentId).remove();
+						//disconnect the observer
+						observer.disconnect();
+						//than change some flags, dont await the Appz we dont care
+						Appz().then((appz) => {
+							//set the states to false, just to know it was opened at least one time
+							//if we want to do seomthing diffretnt the next time
+							appz.sstates('{$prop}', false);
+						});
+					};
 					//we have a form input that is doule-binding-binded and using states data
 					//so we must traverse to create the JS bind
 					//by reading the data-binding data-binded etc... attributes
 					//so this way changing the age on this form will also change them all
 					//and thats the goal of the test :)
-					const remap = async () => {
+					const remap = () => {
 						//build it
 						traverse(scopeElementId);
 						//the close functionnality
-						document.querySelector(`#\${scopeElementId} .form-close`).onclick = (ev) => {
-							//remove the element first
-							document.getElementById(parentId).remove();
-							//than change some flags, dont await the Appz we dont care
-							Appz().then(async (appz) => {
-								await appz.sstates('{$prop}.opened', false);
-							});
-						};
+						document.querySelector(`#\${scopeElementId} .form-close`).onclick = close;
 					};
 					//when we clear states and reput it back
 					//because that script will only run once the first time its created
@@ -93,12 +105,22 @@ $template =<<<HTML
 							});
 						})
 					});
-					// Start observing the parent of the container, NOT the one containgn everything
-					// target node for configured mutations
-					observer.observe(el.parentElement, { childList: true });
-					//will run only once
-					remap();
-				});
+					//the element is not rendered yet so we have to stack the call
+					const interval = setInterval(() => {
+						const el = document.getElementById(scopeElementId);
+						if(el === null){
+							return;
+						}
+						clearInterval(interval);
+						// Start observing the parent of the container, NOT the one containgn everything
+						// target node for configured mutations
+						observer.observe(el.parentElement, { childList: true });
+						//will run only once
+						remap();
+						//last thing focus the scrooooll to the injected form
+						el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+					});	
+				})();
 			</script>
     	{{/{$prop}.functions.scripted}}
     {{/{$prop}}}

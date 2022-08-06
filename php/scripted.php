@@ -17,7 +17,7 @@ $scripted =<<<JS
         //this one will be created right now and will be there at the next scipter target
         //so it wontt duplicate
         if(document.getElementById(n) === null){
-            //console.log("SCRIPTED-INNER-INJECTION[{$prop}.script]:", n, script);
+            console.log("SCRIPTED-INNER-INJECTION[{$prop}.script]:", n, script);
             const sc = cnode("script", {id: n});
             sc.appendChild(document.createTextNode(script)); 
             const csc = document.getElementById("{$uid}");
@@ -32,8 +32,12 @@ $scripted =<<<JS
         //common use
         let sc = null;    
         //injected csss files if some needed
+        const props = await appz.gstates('{$prop}'); 
+        const csss = props.csss; 
+        const scripts = props.scripts; 
+        const script = props.script;
+        //
         const ncsss = 'csss-{$uid}';
-        const csss = await appz.gstates('{$prop}.csss'); 
         if(csss !== null && typeof csss === 'object'){
             let count = 0;
             csss.forEach((item) => {
@@ -73,7 +77,6 @@ $scripted =<<<JS
         const n = 'scripted-{$uid}';
         //do we have extern dependencies libs like calendar-loader.js test
         //that one should be an array in order of injection
-        const scripts = await appz.gstates('{$prop}.scripts'); 
         if(scripts !== null && typeof scripts === 'object'){
             let count = 0;
             scripts.forEach((item) => {
@@ -111,7 +114,6 @@ $scripted =<<<JS
         }   
         //we need to await here or if we have multiple scripted
         //they will all be to null
-        const script = await appz.gstates('{$prop}.script');
         if(script !== null && document.getElementById(n) === null){
             //console.log("SCRIPTED-INJECTION[{$prop}.script]:", n, script);
             sc = cnode("script", {id: n});

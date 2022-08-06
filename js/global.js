@@ -9,14 +9,16 @@ const tim = () => Date.now() - window.timing
 
 const sleep = m => new Promise((resolve) => setTimeout(() => {resolve()}, m))
 
+const diff = (a1, a2) => a2.filter(d => !a1.includes(d))
+		
+const intersect = (a1, a2) => a2.filter(d => a1.includes(d))
+
+const elmt = (name) => document.createElement(name)
+
 const attr = (name, value) => {
     const attr = document.createAttribute(name)
     attr.value = value
     return attr
-  }
-
-const elmt = (name) => {
-    return document.createElement(name)
 }
 
 const cnode = (type, attributes, data, content) => {
@@ -150,16 +152,14 @@ const formit = async (name) => {
         const prop = `forms.${name}`
         //but before creating it will check if it doesnt already exist and put the focus to it instead
         const cuid = await appz.gstates(`${prop}.cuid`)
-        if(cuid !== null && await appz.gstates(`${prop}.opened`) === true){
+        if(cuid !== null){
             const el = document.getElementById(cuid)
             if(el !== null){
-                el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+                el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
             }
             //and we can go away
             return
         }
-        //set the flag to opened
-        await appz.sstates( `${prop}.opened`, true)
         //the creation
         const container = 'forms-' + rand()
         await anode('body', 'div', {class: 'form-container', id: container}, `
