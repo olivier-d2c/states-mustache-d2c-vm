@@ -119,9 +119,14 @@ $slider = [
         }
         #{$cuid} h2{
             font-size: 2rem;
-            padding: 0;
-            margin: 0 0 10px 0;
             color: {$colors['h2-color']};
+            padding: var(--padding);
+            margin: 0;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            opacity: 0.5;
         }
         #{$cuid} small{
             font-size: 0.8rem;
@@ -166,7 +171,7 @@ $slider = [
             height:100%;
             margin-right: 10px;
             border-radius: 10px;
-            background: #eee;
+            /*background: #eee;*/
             transform-origin: center center;
             transform: scale(1);
             transition: transform 0.5s;

@@ -277,7 +277,7 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
       .loading::before {
         display: flex;
         position: absolute;
-        content: "∞";
+        content: "";
         font-size: 1.5rem;
         line-height: 1.5rem;
         color: #ccc;
@@ -291,10 +291,10 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
         bottom: 0;
       }
       @keyframes loading-anim {
-        0% { content: "∞";}
-        25%{ content: "∞∞";}
-        50%{ content: "∞∞∞";}
-        75%{ content: "∞∞∞∞";}
+        0% { content: "‚ù§";}
+        25%{ content: "‚ù§‚ù§";}
+        50%{ content: "‚ù§‚ù§‚ù§";}
+        75%{ content: "‚ù§‚ù§‚ù§‚ù§";}
       }
       .full-width{
         max-width:100%;
@@ -317,7 +317,7 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
           /*min-height: calc((100vw / 2.5)); */ /* enable when we show the response inside the box */
         }
         #slider-top .text{
-          min-height: calc((100vw * 1.25) + 30px + 20px + 2rem); /* + the bottom slider bar height + h2 + h2 margin */
+          min-height: calc((100vw * 1.25)  + 2.5rem); /* + the bottom slider bar height */
         }
       }
       @media only screen and (min-width: 480px) {
@@ -401,7 +401,77 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
               <button class="clear" data-action="delete" data-prop="<?=$slider['prop']?>">clear state</button>
           </div>    
           <div class="text infos" data-binded="<?=$slider['prop']?>" data-templated="@slider.html.php?prop=<?=$slider['prop']?>&interval=<?=$slider['interval']?>">
-            <div class="loading"></div>
+            
+            <!-- 
+              instead of a loader icon
+              so will put a starter image since it will load th slider from the web, 
+              which can be slow, but will use a reduce size ,
+              dont forget tht content will be overwrited with the template content
+              START HERE
+            -->
+
+            <style>
+                /* our basic */
+        
+                #content-slider-loading{
+                    color: #4caf50;
+                    padding: 10px;
+                    background: #e8f5e977;
+                }
+                
+                /* scoped slider style */
+
+                #content-slider-loading * {
+                    box-sizing: border-box;
+                }
+                #content-slider-loading .slider {
+                    width: calc(100vw - (100vw - 100%));
+                    text-align: center;
+                    overflow: hidden;
+                    position: relative;
+                }
+                #content-slider-loading .slides {
+                    display: flex;
+                    overflow: hidden;
+                    position: relative;
+                }
+                #content-slider-loading .slides > div {
+                    flex-shrink: 0;
+                    width: calc(100vw - (100vw - 100%));
+                    height:100%;
+                    margin-right: 10px;
+                    border-radius: 10px;
+                    background: #eee;
+                    transform-origin: center center;
+                    transform: scale(1);
+                    transition: transform 0.5s;
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 100px;
+                }
+                #content-slider-loading img {
+                    width: calc(100vw - (100vw - 100%));
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: calc((100vw - (100vw - 100%)) / 1.3);
+                }
+            </style>  
+
+            <div id="content-slider-loading">  
+              <div class="slider">
+                <div class="slides">
+                  <div id="content-slider-top-slide-1">
+                    <img src="/images/slider/flowers/1.webp" title="slider.flowers #1" alt="slider.flowers #1">
+                  </div>
+                </div>
+              </div>	
+            </div>  
+
+
+            <!-- END HERE -->
           </div>
       </div>
     </div>

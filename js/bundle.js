@@ -628,6 +628,8 @@
 			const render = (v) => {
 				//since we have a lot of async things check before if the binded element is still
 				if(document.querySelector(`[data-uid="${uid}"]`) === null){
+					//removeed from binded listener
+					ModStates.unregister([uid])
 					return
 				}
 				switch (type) {
@@ -641,6 +643,7 @@
 						if (template !== null) {
 							//just testing smaller object OR maybe will use the complete ModStates.geStates() instead
 							//get the needed states for that template to work
+							/*
 							let st = {}
 							bindd.split(',').forEach((prop) => {
 								prop = prop.trim()
@@ -664,6 +667,12 @@
 							})
 							//use the created states and use that template to render it
 							item.innerHTML = ModMustache.render(template, st)
+							*/
+
+							//lets try with full set
+							item.innerHTML = ModMustache.render(template, ModStates.getStates())
+
+
 						} else {
 							//just display the object as string
 							item.innerHTML = JSON.stringify(v)
