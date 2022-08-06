@@ -66,6 +66,7 @@ $template =<<<HTML
 						//so must exist somewhere an async change 
 						//since the scopeElementId is based on states in js
 						//and the parentId is based on ajax call at creation of the template in php
+						//that prob come with scripted.php inject script using the old one instead
 
 
 						document.getElementById(parentId).remove();

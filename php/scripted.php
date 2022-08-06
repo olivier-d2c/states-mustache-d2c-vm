@@ -17,7 +17,7 @@ $scripted =<<<JS
         //this one will be created right now and will be there at the next scipter target
         //so it wontt duplicate
         if(document.getElementById(n) === null){
-            console.log("SCRIPTED-INNER-INJECTION[{$prop}.script]:", n, script);
+            //console.log("SCRIPTED-INNER-INJECTION[{$prop}.script]:", n, script);
             const sc = cnode("script", {id: n});
             sc.appendChild(document.createTextNode(script)); 
             const csc = document.getElementById("{$uid}");

@@ -600,12 +600,11 @@
 		let bindedElementIds = []
 		
 		const binded = async (item) => {
-			if (item.dataset.isbinded !== undefined) {
+			if (item.dataset.uid !== undefined) {
 				return
 			}
-			const uid = rand()
+			const uid = 'BINDED' + rand()
 			item.dataset.uid = uid
-			item.dataset.isbinded = 1
 			const bindd = item.dataset.binded
 			const tpl = item.dataset.templated
 			const type = item.tagName
@@ -627,6 +626,10 @@
 			}
 			//view redering on load and states modifications
 			const render = (v) => {
+				//since we have a lot of async things check before if the binded element is still
+				if(document.querySelector(`[data-uid="${uid}"]`) === null){
+					return
+				}
 				switch (type) {
 					case 'INPUT':
 						item.value = typeof v === 'string' ? v : ''
