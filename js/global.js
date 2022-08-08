@@ -19,7 +19,7 @@ const attr = (name, value) => {
     const attr = document.createAttribute(name)
     attr.value = value
     return attr
-}
+  }
 
 const cnode = (type, attributes, data, content) => {
     const el = elmt(type)
@@ -46,7 +46,7 @@ const gwidth = (el) => {
         padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight),
         border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
 
-    return width + margin - padding + border;    
+    return width + margin - padding + border;
 }
 
 const anode = async (id, type, attr, content) => {
@@ -57,7 +57,7 @@ const anode = async (id, type, attr, content) => {
     await Appz().then(async (appz) => {
         if(attr.hasOwnProperty('data-binded')){
             await appz.binded(el)
-        }    
+        }
         if(attr.hasOwnProperty('data-binding')){
             await appz.binding(el)
         }
@@ -67,7 +67,7 @@ const anode = async (id, type, attr, content) => {
         if(attr.hasOwnProperty('data-action')){
             await appz.action(el)
         }
-    })  
+    })
     
     return el
 }
@@ -128,22 +128,52 @@ const popit = async (automatic) => {
             //our props
             prop = `popups.${sequence[current]}`;
         }
-        const container = 'popups-' + rand()
+        const container = 'popups-' + rand();
+        const backdropq = `#${container}.popup-container .backdrop`;
         await anode('body', 'div', {class: 'popup-container', id: container}, `
+            <style>
+                ${backdropq}{
+                    padding: 2rem;
+                    margin: 0;
+                    background: #000000e3;
+                    position: fixed;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    z-index: 2;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    align-content: center;
+                }
+            </style>
             <input type="hidden" value="${prop}" data-binders="@popups.json.php?prop=${prop}&uid=${container}">
             <div class="container wrap">
-                <div class="response">
-                    <span>Popups ${prop} Data:</span>
-                    <div data-binded="${prop}"></div>
-                    <button class="clear" data-action="delete" data-prop="${prop}">clear state</button>
-                </div>
-                <!-- basic popup binded + any we can use in the popup template to display informations -->
-                <div class="text infos" data-binded="${prop}, interest.musics, personal" data-templated="@popups.html.php?prop=${prop}">
-                    <div class="loading"></div>
+                <div class="backdrop">
+                    <div class="response">
+                        <span>Popups ${prop} Data:</span>
+                        <div data-binded="${prop}"></div>
+                        <button class="clear" data-action="delete" data-prop="${prop}">clear state</button>
+                    </div>
+                    <!-- basic popup binded + any we can use in the popup template to display informations -->
+                    <div data-binded="${prop}, interest.musics, personal" data-templated="@popups.html.php?prop=${prop}">
+                        <div class="loading"></div>
+                    </div>
                 </div>
             </div>
         `)
+        //traverse and fetch
         await traverse(container)
+        //put a close listener on the complete backdrop
+        //in case it doesnt load we wtill want to be able to click off
+        document.querySelector(backdropq).onclick = (ev) => {
+            //we want only the backdrop
+            if(ev.target.classList.contains('backdrop')){
+                document.getElementById(container).remove();
+            }
+        };
     })
 }
 
@@ -155,7 +185,7 @@ const formit = async (name) => {
         if(cuid !== null){
             const el = document.getElementById(cuid)
             if(el !== null){
-                el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
+                el.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
             }
             //and we can go away
             return

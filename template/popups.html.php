@@ -4,7 +4,7 @@ $prop = $_REQUEST['prop'] ?? 'default';
 $scopedcss = str_replace('.', '-', $prop);
 
 $colors = [
-	'backdrop-background' => '#fefefe',
+	'box-background' => '#fefefe',
 	'p-color' => '#ff7043',
 	'h2-color' => '#ff5722',
 	'animation-time' => '0.3s',
@@ -27,7 +27,7 @@ switch($prop) {
 		break;
 	case 'popups.autopop':
 		$colors = [
-			'backdrop-background' => '#ff5722',
+			'box-background' => '#ff5722',
 			'p-color' => '#fff',
 			'h2-color' => '#fff',
 			'animation-time' => '0.6s',
@@ -50,20 +50,6 @@ $template =<<<HTML
 
 	{{#{$prop}.functions.scripted}}{{/{$prop}.functions.scripted}}
 	<style>
-		.{$scopedcss}{
-			padding: 2rem;
-			margin:0;
-			background: #000000e3;
-			position: fixed;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			z-index: 2;
-			display: flex;
-    		justify-content: center;
-    		align-items: center;
-		}
 		.{$scopedcss} h2{
 			margin:0;
 			color: {$colors['h2-color']};
@@ -73,10 +59,10 @@ $template =<<<HTML
 			color: {$colors['p-color']};
 			font-size:1rem;
 		}
-		.{$scopedcss} .backdrop{
+		.{$scopedcss} .box{
 		    margin-bottom: 0;
 			position:relative;
-			background: {$colors['backdrop-background']};
+			background: {$colors['box-background']};
 			border-radius: 10px;
 			box-shadow: 5px 5px 10px #000000a3;
 			opacity:0;
@@ -85,17 +71,17 @@ $template =<<<HTML
 		@keyframes {$scopedcss}-opacitated {
 			from {
 				opacity: 0;
-				margin-bottom: 0;
+				margin-bottom: 10rem;
 			}
 			to {
 				opacity: 1;
-				margin-bottom: 10rem;
+				margin-bottom: 0;
 			}
 		}
-		.{$scopedcss} .backdrop .content{
+		.{$scopedcss} .box .content{
 			padding:1.5rem;
 		}
-		.{$scopedcss} .backdrop .content img{
+		.{$scopedcss} .box .content img{
 			width: calc(100vw - (100vw - 100%));
 		}
 		.{$scopedcss} ul{
@@ -117,7 +103,7 @@ $template =<<<HTML
     	}
 	</style>
 	<div class="{$scopedcss}">
-		<div class="backdrop">
+		<div class="box">
 			<div class="content">
 				<h2>Popups: <small>{$prop}</small></h2>
 				{$innerContent}

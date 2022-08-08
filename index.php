@@ -289,12 +289,13 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
         left: 0;
         right: 0;
         bottom: 0;
+		margin-top: 0.4rem;
       }
       @keyframes loading-anim {
-        0% { content: "‚ù§";}
-        25%{ content: "‚ù§‚ù§";}
-        50%{ content: "‚ù§‚ù§‚ù§";}
-        75%{ content: "‚ù§‚ù§‚ù§‚ù§";}
+		  0% { content: "∞";}
+		  25%{ content: "∞∞";}
+		  50%{ content: "∞∞∞";}
+		  75%{ content: "∞∞∞∞";}
       }
       .full-width{
         max-width:100%;
@@ -452,7 +453,6 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
                     font-size: 100px;
                 }
                 #content-slider-loading img {
-                    width: calc(100vw - (100vw - 100%));
                     top: 0;
                     left: 0;
                     width: 100%;
@@ -464,7 +464,7 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
               <div class="slider">
                 <div class="slides">
                   <div id="content-slider-top-slide-1">
-                    <img src="/images/slider/flowers/1.webp" title="slider.flowers #1" alt="slider.flowers #1">
+                    <img src="/images/slider/flowers/1.webp" alt="slider.flowers #1 loading">
                   </div>
                 </div>
               </div>	
