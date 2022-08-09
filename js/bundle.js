@@ -249,10 +249,12 @@
 		let registered = {}
 		let undos = []
 		let observables = {}
+		let decorators = {}
 		
 		async function setStates(prop, value, nosave, noupdated) {
 			await sleep(0)
 			if (states) {
+				value = _decorate(prop, value)
 				if (nosave === undefined) {
 					_save(prop)
 				}
@@ -392,6 +394,34 @@
 			}
 		}
 		
+		function decorator(prop, cb) {
+			prop = `${prefix}${prop}`
+			if (decorators[prop] === undefined) {
+				decorators[prop] = [];
+			}
+			decorators[prop].push(cb)
+			//return position to remove the decorator later if needed
+			return decorators[prop].length - 1
+		}
+		
+		function _decorate(prop, value){
+			//will manipulate the value object diretly before insertion
+			//there can be more than one so its our job to keep it clean
+			const keys = Object.keys(decorators).filter((k) => {
+				return (new RegExp(`${prefix}${prop}`)).test(k);
+			});
+			if (keys.length) {
+				keys.forEach((k) => {
+					decorators[k].forEach((f) => {
+						if (typeof f === 'function') {
+							value = f(value)
+						}
+					})
+				})
+			}
+			return value
+		}
+		
 		function _deleted(prop) {
 			//console.log('STATE-DELETED', {prop, states, registered});
 			let keys = Object.keys(registered).filter((k) => {
@@ -417,7 +447,7 @@
 		}
 		
 		function _updated(prop, value) {
-			console.log('STATE-UPDATED', {prop, value, states, registered, undos, observables});
+			console.log('STATE-UPDATED', {prop, value, states, registered, undos, observables, decorators});
 			if (prop.indexOf('.') !== -1) {
 				const rb = (a, s) => {
 					let it = a.shift();
@@ -513,7 +543,7 @@
 			}
 		}
 		
-		return {setStates, getStates, delStates, undoStates, register, unregister, observe, robserve}
+		return {setStates, getStates, delStates, undoStates, register, unregister, observe, robserve, decorator}
 		
 	};
 	
@@ -794,6 +824,10 @@
 			return ModStates.observe(prop, cb)
 		}
 		
+		const decstates = async (prop, cb) => {
+			return ModStates.decorator(prop, cb)
+		}
+		
 		const robsstates = async (prop, pos) => {
 			return ModStates.robserve(prop, pos)
 		}
@@ -816,7 +850,7 @@
 			collect();
 		})();
 		
-		return {binded, binders, binding, action, gstates, sstates, obsstates, robsstates};
+		return {binded, binders, binding, action, gstates, sstates, obsstates, robsstates, decstates};
 		
 	};
 	

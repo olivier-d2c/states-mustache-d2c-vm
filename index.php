@@ -413,44 +413,11 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
 
             <style>
                 /* our basic */
-        
                 #content-slider-loading{
                     color: #4caf50;
                     padding: 10px;
                     background: #e8f5e977;
-                }
-                
-                /* scoped slider style */
-
-                #content-slider-loading * {
-                    box-sizing: border-box;
-                }
-                #content-slider-loading .slider {
-                    width: calc(100vw - (100vw - 100%));
-                    text-align: center;
-                    overflow: hidden;
-                    position: relative;
-                }
-                #content-slider-loading .slides {
-                    display: flex;
-                    overflow: hidden;
-                    position: relative;
-                }
-                #content-slider-loading .slides > div {
-                    flex-shrink: 0;
-                    width: calc(100vw - (100vw - 100%));
-                    height:100%;
-                    margin-right: 10px;
-                    border-radius: 10px;
-                    background: #eee;
-                    transform-origin: center center;
-                    transform: scale(1);
-                    transition: transform 0.5s;
-                    position: relative;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 100px;
+					box-sizing: border-box;
                 }
                 #content-slider-loading img {
                     top: 0;
@@ -459,17 +426,9 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
                     height: calc((100vw - (100vw - 100%)) / 1.3);
                 }
             </style>  
-
-            <div id="content-slider-loading">  
-              <div class="slider">
-                <div class="slides">
-                  <div id="content-slider-top-slide-1">
-                    <img src="/images/slider/flowers/1.webp" alt="slider.flowers #1 loading">
-                  </div>
-                </div>
-              </div>	
-            </div>  
-
+            <div id="content-slider-loading">
+                <img src="/images/slider/flowers/1.webp" alt="slider.flowers #1 loading">
+            </div>
 
             <!-- END HERE -->
           </div>

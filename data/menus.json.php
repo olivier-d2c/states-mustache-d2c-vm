@@ -24,7 +24,12 @@ if($lang === 'fr'){
                 'text' => 'Go to slide 3 of top slider!',
                 'link' => '#content-slider-top-slide-3',
                 'id' => 'goto-slider-top'
-            ]
+            ],
+			[
+				'text' => 'This {{MAKE}} was replaced by decorator at insertion!',
+				'link' => '/',
+				'id' => 'testing-decorators'
+			]
         ]
     ];
 }else{

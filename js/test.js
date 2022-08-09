@@ -225,11 +225,26 @@
 			//some observer to trigger other things
 			await addInterestAnimalObserver(appz)
 			//add an auto poup intersection
-			autopopup(appz);
+			autopopup(appz)
 			//listen to something that is not there yet
 			//since the mnus is injected when scrolling only
 			appz.obsstates('menus', (obj) => {
 				console.log('OBSSTATES[menus]:', obj)
+			})
+			//lets put a decorator on some states values
+			//which means will manipulate it before inserting it
+			//a bit like a replacer vars if needed
+			appz.decstates('menus', (obj) => {
+				if(typeof obj.listing === 'object'){
+					obj.listing.forEach((item, index) => {
+						//we will replace the pattern by something else
+						if(typeof item.text === 'string' && (new RegExp('{{MAKE}}', 'g')).test(item.text)){
+							//just a fake replacement
+							obj.listing[index].text = item.text.replace('{{MAKE}}', 'Subaru')
+						}
+					})
+				}
+				return obj
 			})
 		})
 		
