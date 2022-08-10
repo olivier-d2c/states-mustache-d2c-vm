@@ -32,13 +32,13 @@ $scripted =<<<JS
         //common use
         let sc = null;    
         //injected csss files if some needed
-        const props = await appz.gstates('{$prop}'); 
-        const csss = props.csss; 
+        const props = await appz.gstates('{$prop}');
+        const csss = props.csss;
         const scripts = props.scripts; 
         const script = props.script;
         //
         const ncsss = 'csss-{$uid}';
-        if(csss !== null && typeof csss === 'object'){
+        if(csss !== undefined && csss !== null && typeof csss === 'object'){
             let count = 0;
             csss.forEach((item) => {
                 count++;
@@ -77,7 +77,7 @@ $scripted =<<<JS
         const n = 'scripted-{$uid}';
         //do we have extern dependencies libs like calendar-loader.js test
         //that one should be an array in order of injection
-        if(scripts !== null && typeof scripts === 'object'){
+        if(scripts !== undefined && scripts !== null && typeof scripts === 'object'){
             let count = 0;
             scripts.forEach((item) => {
                 count++;
@@ -114,7 +114,7 @@ $scripted =<<<JS
         }   
         //we need to await here or if we have multiple scripted
         //they will all be to null
-        if(script !== null && document.getElementById(n) === null){
+        if(script !== undefined && script !== null && document.getElementById(n) === null){
             //console.log("SCRIPTED-INJECTION[{$prop}.script]:", n, script);
             sc = cnode("script", {id: n});
             sc.appendChild(document.createTextNode(script)); 

@@ -27,6 +27,7 @@ $template =<<<HTML
                 //get all of them in order of appearence
                 let stacked = false; 
                 let stack = [];
+                let interval = null;
                 const automatic = (ev) => {
                     try{
                         ev.preventDefault();
@@ -64,26 +65,41 @@ $template =<<<HTML
                     //flag
                     stacked = true;
                 }
-                //make it change in X seconds    
-                setInterval(() => {
-                    //does it still exist
-                    if(document.getElementById(scopeElementId)){
-                        if(!stacked){
-                            stacking();
-                        }
-                        const el = stack.shift();
-                        stack.push(el);
-                        el.click();
-                    }else{
-                        //if the lement is recreated it will re stack them
-                        stacked = false;
-                    }    
-                }, {$interval});
+                const loop = () => {
+                	//make it change in X seconds
+					interval = setInterval(() => {
+						//does it still exist
+						if(document.getElementById(scopeElementId)){
+							if(!stacked){
+								stacking();
+							}
+							const el = stack.shift();
+							stack.push(el);
+							el.click();
+						}else{
+							//if the lement is recreated it will re stack them
+							stacked = false;
+						}
+					}, {$interval});
+                }
+                
 
                 //@TODO: do a scroll bar observer to place the good A.focus
                 //
                 //
-
+                
+                const el = document.getElementById(scopeElementId);
+                //some listener on are we over to stop it
+                el.onmouseover = (ev) => {
+                	if(ev.target.getAttribute('id') === scopeElementId){
+                		clearInterval(interval);
+                	}
+                }
+                el.onmouseleave = (ev) => {
+                	loop();
+                }
+                //start the loop slide
+                loop();
             });
             
         </script>  
