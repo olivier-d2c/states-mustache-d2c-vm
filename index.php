@@ -318,17 +318,20 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
           /*min-height: calc((100vw / 2.5)); */ /* enable when we show the response inside the box */
         }
         #slider-top .text{
-          min-height: calc((100vw * 1.25)  + 2.5rem); /* + the bottom slider bar height */
+          min-height: calc(150vw - 54px); /* + the bottom slider bar height */
         }
       }
       @media only screen and (min-width: 480px) {
         #slider-top {
-          min-height: 582px; /* manually bad calc todo a real one */
-        }
-        .response div[data-binded] {
-          display: block;
+            min-height: 535px; /* manually bad calc todo a real one */
         }
       }
+
+	  @media only screen and (min-width: 1280px) {
+		  .response div[data-binded] {
+			  display: block;
+		  }
+	  }
 
     </style>
 
@@ -415,16 +418,22 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
                 /* our basic */
                 #content-slider-loading{
                     color: #4caf50;
-                    padding: 10px;
+                    padding: 10px 10px 20px 10px;
                     background: #e8f5e977;
 					box-sizing: border-box;
+					display: flex;
+					justify-content: center;
                 }
                 #content-slider-loading img {
-                    top: 0;
-                    left: 0;
                     width: 100%;
                     height: calc((100vw - (100vw - 100%)) / 1.3);
                 }
+				@media only screen and (min-width: 480px) {
+					#content-slider-loading img {
+						max-height: 400px;
+						width: auto;
+					}
+				}
             </style>  
             <div id="content-slider-loading">
                 <img src="/images/slider/flowers/1.webp" alt="slider.flowers #1 loading">
