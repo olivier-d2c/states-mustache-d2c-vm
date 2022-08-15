@@ -111,7 +111,7 @@ const jq = async () => {
     return true
 }
 
-const popit = async (automatic) => {
+window.popit = async (automatic) => {
     await Appz().then(async (appz) => {
         let prop;
         if(automatic){
@@ -177,7 +177,7 @@ const popit = async (automatic) => {
     })
 }
 
-const formit = async (name) => {
+window.formit = async (name) => {
     await Appz().then(async (appz) => {
         const prop = `forms.${name}`
         //but before creating it will check if it doesnt already exist and put the focus to it instead
@@ -211,6 +211,42 @@ const formit = async (name) => {
         `)
         await traverse(container)
     })
+}
+
+window.openMenus = async () => {
+    
+    const nid = 'menus-top-container'
+    const el = document.getElementById(nid)
+    
+    //is it already loaded or fetch
+    if(el.dataset.isloaded === '0') {
+        const prop = `menus`
+        const container = 'menus-' + rand()
+        await anode(nid, 'div', {id: container}, `
+            <input type="hidden" value="${prop}" data-binders="@menus.json.php?lang=fr">
+            <div class="container wrap">
+                <div class="response">
+                    <span>Menus Data:</span>
+                    <div data-binded="${prop}"></div>
+                    <button class="clear" data-action="delete" data-prop="${prop}">clear state</button>
+                </div>
+                <div class="text infos" data-binded="${prop}" data-templated="@menus.html">
+                    <div class="loading"></div>
+                </div>
+            </div>
+        `)
+        traverse(container)
+        el.dataset.isloaded = 1
+    }
+    //open it or close it
+    if(el.dataset.isopen === '0'){
+        el.style.display = 'block';
+        el.dataset.isopen = 1
+    }else{
+        el.style.display = 'none';
+        el.dataset.isopen = 0
+    }
+    
 }
 
 const Appz = async () => {

@@ -1,0 +1,36 @@
+<style>
+	.footers{
+		padding: 10px;
+		background: #4caf50;
+        color: #fff;
+	}
+	.footers h2{
+		font-size: 2rem;
+		color: #fff;
+		padding: 0;
+		margin: 0 0 10px 0;
+	}
+	.footers ul{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.footers li{
+		padding: 5px 0;
+		font-size: 1.2rem;
+	}
+	.footers a{
+		color: #ffeb3b;
+		text-decoration: none;
+	}
+</style>
+{{#footers}}
+<div class="footers">
+    <h2>Footers:</h2>
+    <ul>
+        {{#footers.listing}}
+            <li id="{{id}}"><a href="{{link}}">{{{text}}}</a></li>
+        {{/footers.listing}}
+    </ul>
+</div>
+{{/footers}}

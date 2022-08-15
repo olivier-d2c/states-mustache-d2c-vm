@@ -1,4 +1,18 @@
-<?php 
+<?php
+error_reporting(E_ALL);
+
+//trying mustache php server side rendering
+require_once($_SERVER["DOCUMENT_ROOT"].'/php/utils.php');
+//and overwrite the menu colors for fun in style
+$middleMenus = ssr('menus', 'menus.html', 'json/menu.fr.json', [
+    "scopename" => "middlemenu",
+    "colors" => [
+        "background" => "#fff",
+	    "h2" => "#000",
+	    "a" => "#333"
+    ]
+]);
+
 
 $dataBindersPersonal = base64_encode(json_encode([
   
@@ -309,6 +323,26 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
 		  color: #fff;
 		  text-align: center;
 	  }
+      .topmenus{
+		  margin: var(--margin);
+		  padding: var(--padding);
+		  border: 1px solid #777;
+	  }
+	  .topmenus .opener{
+		  display: flex;
+		  justify-content: center;
+		  color: #777;
+		  align-items: center;
+		  width: 100%;
+		  cursor:pointer;
+	  }
+      .middlemenus{
+		  margin: var(--margin);
+      }
+	  .topmenus .container{
+		  margin-top: 10px;
+          width:100%;
+	  }
       @media only screen and (max-width: 480px) {
         .text {
           min-height: calc((100vw / 3));
@@ -394,7 +428,12 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
           </ul>
         {{/interest.musics}}
       </div>
-    </template>  
+    </template>
+
+    <div class="container wrap topmenus">
+        <div class="opener" onclick="window.openMenus();">Open Menus</div>
+        <div class="container" id="menus-top-container" data-isopen="0" data-isloaded="0" style="display:none;"></div>
+    </div>
 
     <div id="<?=$slider['id']?>">
       <input type="hidden" value="<?=$slider['prop']?>" data-binders="@slider.json.php?prop=<?=$slider['prop']?>&uid=<?=$slider['id']?>">
@@ -442,6 +481,10 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
             <!-- END HERE -->
           </div>
       </div>
+    </div>
+
+    <div class="middlemenus">
+        <?=$middleMenus?>
     </div>
 
     <div class="container">
@@ -504,7 +547,9 @@ $bundleJsCode = file_exists($bundleJsFile) ? file_get_contents($bundleJsFile) : 
       <div class="text infos" data-binded="personal, phones, interest.musics" data-templated="#infos">
         <div class="loading"></div>
       </div>  
-    </div>  
+    </div>
+
+    <div id="footers"></div>
 
     <div class="floating">
       <button data-action="undo">&#9100;</button>  

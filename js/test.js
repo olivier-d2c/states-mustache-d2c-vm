@@ -28,20 +28,20 @@
 		});
 	}
 	
-	const addMenus = async () => {
+	const addFooters = async () => {
 		
-		const prop = `menus`
-		const container = 'menus-' + rand()
+		const prop = `footers`
+		const container = 'footers-' + rand()
 		
-		await anode('body', 'div', {id: container}, `
-			<input type="hidden" value="${prop}" data-binders="@menus.json.php?lang=fr">
+		await anode('footers', 'div', {id: container}, `
+			<input type="hidden" value="${prop}" data-binders="@footers.json.php?lang=fr">
 			<div class="container wrap">
 				<div class="response">
-					<span>Menus Data:</span>
+					<span>Footers Data:</span>
 					<div data-binded="${prop}"></div>
 					<button class="clear" data-action="delete" data-prop="${prop}">clear state</button>
 				</div>
-				<div class="text infos" data-binded="${prop}" data-templated="@menus.html">
+				<div class="text infos" data-binded="${prop}" data-templated="@footers.html">
 					<div class="loading"></div>
 				</div>
 			</div>
@@ -102,7 +102,7 @@
 		return container
 		
 	}
-
+	
 	// pushing later ondemand test with timeout or event scroll
 	
 	const test = async (delay) => {
@@ -228,13 +228,13 @@
 			autopopup(appz)
 			//listen to something that is not there yet
 			//since the mnus is injected when scrolling only
-			appz.obsstates('menus', (obj) => {
-				console.log('OBSSTATES[menus]:', obj)
+			appz.obsstates('footers', (obj) => {
+				console.log('OBSSTATES[footers]:', obj)
 			})
 			//lets put a decorator on some states values
 			//which means will manipulate it before inserting it
 			//a bit like a replacer vars if needed
-			appz.decstates('menus', (obj) => {
+			appz.decstates('footers', (obj) => {
 				if(typeof obj.listing === 'object'){
 					obj.listing.forEach((item, index) => {
 						//we will replace the pattern by something else
@@ -253,7 +253,7 @@
 			//remove it since we only want it one time only
 			document.removeEventListener('scroll', scrollListener)
 			//we can lazy load our bottom Menus
-			await addMenus()
+			await addFooters()
 		}
 		
 		//prevent default

@@ -1,57 +1,14 @@
 <?php
 
 $lang = $_REQUEST['lang'] ?? 'en';
-
-if($lang === 'fr'){
-    $menu = [
-        'listing' => [
-            [
-                'text' => 'Accueil',
-                'link' => '/',
-                'id' => 'menu-home'
-            ],
-            [
-                'text' => 'Contactez-nous!',
-                'link' => '/contactez-nous/',
-                'id' => 'menu-contact'
-            ],
-			[
-				'text' => 'Open a popup!',
-				'link' => 'javascript:popit();',
-				'id' => 'popup-opener'
-			],
-            [
-                'text' => 'Go to slide 3 of top slider!',
-                'link' => '#content-slider-top-slide-3',
-                'id' => 'goto-slider-top'
-            ],
-			[
-				'text' => 'This {{MAKE}} was replaced by decorator at insertion!',
-				'link' => '/',
-				'id' => 'testing-decorators'
-			]
-        ]
-    ];
-}else{
-    $menu = [
-        'listing' => [
-            [
-                'text' => 'Home',
-                'link' => '/',
-                'id' => 'menu-home'
-            ],
-            [
-                'text' => 'Contact Us!',
-                'link' => '/contact-us/',
-                'id' => 'menu-contact'
-            ]
-        ]    
-    ];
-}
-
-$json = json_encode($menu);
-
-exit($json);
-
+$menu = @file_get_contents($_SERVER["DOCUMENT_ROOT"]."/data/json/menu.{$lang}.json");
+$menu = json_decode($menu, true);
+array_push($menu['listing'], [
+	"text" => $lang === 'fr' ? 'English' : 'Francais',
+	"link" => $lang === 'fr' ? '/en' : '/fr',
+	"id" => "menu-lang"
+]);
+$menu = json_encode($menu);
+exit($menu);
 
 //EOF

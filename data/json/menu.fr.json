@@ -1,0 +1,30 @@
+{
+  "scopename" : "menus",
+  "colors" : {
+	"background": "#fce4ec77",
+	"h2": "#ad1457",
+	"a": "#e91e63"
+  },
+  "listing": [
+	{
+	  "text": "Accueil",
+	  "link": "\/",
+	  "id": "menu-home"
+	},
+	{
+	  "text": "Menu #1",
+	  "link": "\/",
+	  "id": "menu-1"
+	},
+	{
+	  "text": "Menu #2",
+	  "link": "\/",
+	  "id": "menu-2"
+	},
+	{
+	  "text": "Popit Menu",
+	  "link": "javascript:window.popit();",
+	  "id": "menu-popit"
+	}
+  ]
+}
